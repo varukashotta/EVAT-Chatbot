@@ -1,0 +1,220 @@
+version: "3.1"
+
+intents:
+  - greet
+  - menu_selection
+  - route_planning
+  - route_info
+  - emergency_charging
+  - emergency_location_input
+  - emergency_connector_input
+  - preference_charging
+  - preference_selection
+  - preference_location_input
+  - route_station_selection
+  - emergency_station_selection
+  - preference_station_selection
+  - action_selection
+  - follow_up
+  - goodbye
+  - nlu_fallback
+  # Enhanced preference filtering intent
+  - filter_by_preferences
+  # Enhanced charger information intent
+  - get_charger_info
+  # Traffic information intent
+  - get_traffic_info
+  # Advanced directions intent
+  - get_advanced_directions
+  - get_directions
+
+entities:
+  - menu_option
+  - start_location
+  - end_location
+  - current_location
+  - preference_type
+  - action_type
+  - follow_up_type
+  - station_name
+  - charging_speed
+  - connector_type
+  - price
+  - power_level
+  - station_id
+
+slots:
+  menu_option:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: menu_option
+
+  start_location:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: start_location
+
+  end_location:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: end_location
+
+  current_location:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: current_location
+
+
+  preference_type:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: preference_type
+
+  charging_preference:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: custom
+
+
+  action_type:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: action_type
+
+  selected_station:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: custom
+
+  displayed_stations:
+    type: list
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  conversation_context:
+    type: categorical
+    influence_conversation: true
+    values:
+      - initial_location_collection
+      - route_planning
+      - emergency_charging
+      - preference_charging
+      - route_planning_results
+      - emergency_results
+      - preference_results
+      - station_details
+      - getting_directions
+      - comparing_stations
+      - checking_availability
+      - ended
+      - route_station_selection
+      - emergency_station_selection
+      - preference_station_selection
+    mappings:
+      - type: custom
+
+  follow_up_type:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: follow_up_type
+
+  charging_speed:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: charging_speed
+
+  connector_type:
+    type: list
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: connector_type
+
+  power_level:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: power_level
+
+  price:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: price
+
+  filter_preferences:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  user_lat:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  user_lng:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+responses:
+  utter_goodbye:
+    - text: "Goodbye! Have a great journey! 🚗⚡"
+
+
+
+actions:
+  - action_collect_initial_location
+  - action_handle_any_input
+  - action_handle_menu_selection
+  - action_handle_route_input
+  - action_handle_preference_input
+  - action_handle_preference_location_input
+  - action_handle_route_station_selection
+  - action_handle_emergency_station_selection
+  - action_handle_preference_station_selection
+  - action_handle_action_choice
+  - action_handle_follow_up
+  - action_handle_emergency_location_input
+  - action_handle_emergency_charging
+  - action_handle_preference_charging
+  # Enhanced preference filtering action
+  - action_enhanced_preference_filtering
+  # Enhanced charger information action
+  - action_enhanced_charger_info
+  # Traffic information action
+  - action_traffic_info
+  # Advanced directions action
+  - action_advanced_directions
+  # Route info action
+  - action_handle_route_info
+  - action_get_directions_by_id
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EVAT Chatbot</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="app-header__inner header-grid">
+      <span class="logo" aria-hidden="true">⚡</span>
+      <div class="title-wrap">
+        <h1 class="app-title">Melbourne EV Charging Assistant</h1>
+        <p class="app-tagline">Find charging stations across Melbourne</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="app">
+    <section class="chat-frame" id="chat-frame">
+      <div id="chat"></div>
+      <div id="typing-indicator" class="hidden">EVAT is typing…</div>
+    </section>
+
+    <form id="chat-form" aria-label="Chat input area" class="composer">
+      <textarea id="user-input" placeholder="Ask me about charging stations…" rows="1"></textarea>
+      <button type="submit" class="btn-send" title="Send">➤</button>
+      <button type="button" id="clear-btn" class="btn-clear" title="Clear chat">↻</button>
+    </form>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
