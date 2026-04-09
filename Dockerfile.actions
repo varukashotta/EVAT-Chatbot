@@ -1,24 +1,27 @@
 FROM rasa/rasa-sdk:3.6.2
 
-WORKDIR /app
-
-# Install extra Python dependencies the actions need
 USER root
+
+# Install extra Python dependencies
 COPY requirements.actions.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+# Recreate the project structure so all relative paths work:
+#   /app/rasa/actions/  <- action code (../../data/raw resolves to /app/data/raw)
+#   /app/data/raw/      <- CSV data files
+#   /app/backend/       <- real_time_apis.py (sys.path.append ../../backend)
+#   /app/actions        <- symlink so "from actions.X import ..." resolves
+COPY rasa/actions/  /app/rasa/actions/
+COPY data/          /app/data/
+COPY backend/       /app/backend/
+
+# Symlink so Python can import "actions" as a top-level package
+RUN ln -s /app/rasa/actions /app/actions
+
 USER 1001
 
-# Copy the full project structure so relative paths in data_service.py work
-# data_service.py does: os.path.join(current_dir, '..', '..', 'data', 'raw')
-# So actions/ must be at /app/rasa/actions/ and data at /app/data/
-COPY rasa/actions/  rasa/actions/
-COPY backend/       backend/
-COPY data/          data/
-
-# rasa-sdk expects actions in /app/actions by default,
-# so we point it to the correct module path
-ENV ACTION_ENDPOINT_ACTIONS_MODULE=rasa.actions.actions
+WORKDIR /app
 
 EXPOSE 5055
 
-CMD ["start", "--actions", "rasa.actions.actions", "--port", "5055"]
+CMD ["start", "--actions", "actions.actions", "--port", "5055"]
