@@ -1,0 +1,32 @@
+services:
+  rasa:
+    build:
+      context: .
+      dockerfile: Dockerfile.rasa
+    ports:
+      - "5005:5005"
+    volumes:
+      # Mount a pre-trained model to skip in-container training
+      - ./rasa/models:/app/models
+    depends_on:
+      actions:
+        condition: service_healthy
+    environment:
+      - RASA_TELEMETRY_ENABLED=false
+    restart: unless-stopped
+
+  actions:
+    build:
+      context: .
+      dockerfile: Dockerfile.actions
+    ports:
+      - "5055:5055"
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5055/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped

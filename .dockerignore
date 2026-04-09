@@ -1,0 +1,10 @@
+rasa_env/
+__pycache__/
+*.pyc
+.git/
+.DS_Store
+.env
+rasa/.rasa/
+rasa/models/
+*.tar.gz
+node_modules/

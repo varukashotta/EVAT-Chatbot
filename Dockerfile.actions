@@ -1,0 +1,24 @@
+FROM rasa/rasa-sdk:3.6.2
+
+WORKDIR /app
+
+# Install extra Python dependencies the actions need
+USER root
+COPY requirements.actions.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+USER 1001
+
+# Copy the full project structure so relative paths in data_service.py work
+# data_service.py does: os.path.join(current_dir, '..', '..', 'data', 'raw')
+# So actions/ must be at /app/rasa/actions/ and data at /app/data/
+COPY rasa/actions/  rasa/actions/
+COPY backend/       backend/
+COPY data/          data/
+
+# rasa-sdk expects actions in /app/actions by default,
+# so we point it to the correct module path
+ENV ACTION_ENDPOINT_ACTIONS_MODULE=rasa.actions.actions
+
+EXPOSE 5055
+
+CMD ["start", "--actions", "rasa.actions.actions", "--port", "5055"]

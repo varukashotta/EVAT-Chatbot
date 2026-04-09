@@ -1,0 +1,17 @@
+FROM rasa/rasa:3.6.15
+
+WORKDIR /app
+
+# Copy Rasa project files
+COPY rasa/config.yml    config.yml
+COPY rasa/domain.yml    domain.yml
+COPY rasa/credentials.yml credentials.yml
+COPY rasa/endpoints.docker.yml endpoints.yml
+COPY rasa/data/         data/
+
+# Train the model (default — can be skipped if mounting a pre-trained model)
+RUN rasa train
+
+EXPOSE 5005
+
+CMD ["run", "--enable-api", "--cors", "*", "--port", "5005"]
