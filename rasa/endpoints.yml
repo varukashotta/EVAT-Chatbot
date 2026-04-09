@@ -1,5 +1,5 @@
 action_endpoint:
-  url: "http://localhost:5055/webhook"
+  url: "https://evat-action-server.onrender.com/webhook"
 
 
 
